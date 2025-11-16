@@ -1,0 +1,44 @@
+[tool.poetry]
+name = "backend-trainee"
+version = "0.1.0"
+description = "PR Reviewer Assignment Service"
+authors = ["xred337@gmail.com"]
+readme = "README.md"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = "0.104.1"
+uvicorn = {extras = ["standard"], version = "0.24.0"}
+SQLAlchemy = "2.0.23"
+alembic = "1.12.1"
+psycopg2-binary = "2.9.9"
+pydantic = "2.5.0"
+pydantic-settings = "2.1.0"
+python-dotenv = "1.0.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "7.4.3"
+pytest-asyncio = "0.21.1"
+httpx = "0.25.2"
+locust = "2.17.0"
+flake8 = "6.1.0"
+mypy = "1.7.0"
+black = "23.11.0"
+isort = "5.12.0"
+
+[tool.black]
+line-length = 100
+target-version = ["py311"]
+
+[tool.isort]
+profile = "black"
+line_length = 100
+skip = ["migrations/versions", "alembic"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "strict"
+testpaths = ["tests"]
+
+[tool.poetry.scripts]
+start = "uvicorn:run"
