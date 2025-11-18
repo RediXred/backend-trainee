@@ -13,6 +13,7 @@ exclude =
     dist,
     *.egg-info,
     migrations/versions,
+    migrations/*.py
     alembic
 ignore =
     E203,
