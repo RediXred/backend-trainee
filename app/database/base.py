@@ -4,6 +4,8 @@ from sqlalchemy.pool import QueuePool
 
 from app.core.config import settings
 
+
+assert settings.DATABASE_URL is not None, "DATABASE_URL must be set"
 engine = create_engine(
     settings.DATABASE_URL,
     poolclass=QueuePool,

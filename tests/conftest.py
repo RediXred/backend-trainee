@@ -8,6 +8,7 @@ from app.core.config import settings
 from app.database.base import Base, get_db
 from app.main import app
 
+assert settings.TEST_DATABASE_URL is not None, "TEST_DATABASE_URL must be set"
 TEST_DATABASE_URL = settings.TEST_DATABASE_URL
 
 engine = create_engine(
