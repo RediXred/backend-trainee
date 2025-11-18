@@ -44,6 +44,9 @@ pip install -r requirements.txt
    - API: http://localhost:8080
    - Документация: http://localhost:8080/docs
 
+### Настройка .env
+
+* Скопируйте .env.example в .env в корне проекта
 
 ## API endpoints
 

@@ -1,17 +1,14 @@
-import os
-
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import NullPool
 
+from app.core.config import settings
 from app.database.base import Base, get_db
 from app.main import app
 
-TEST_DATABASE_URL = os.getenv(
-    "TEST_DATABASE_URL", "postgresql://postgres:postgres@db:5432/pr_reviewer_db_test"
-)
+TEST_DATABASE_URL = settings.TEST_DATABASE_URL
 
 engine = create_engine(
     TEST_DATABASE_URL,

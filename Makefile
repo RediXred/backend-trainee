@@ -20,10 +20,16 @@ test: test-setup-db
 	docker compose exec app pytest tests/
 
 test-setup-db:
-	@echo "Creating test database"
-	docker compose exec db psql -U postgres -c "SELECT 1 FROM pg_database WHERE datname = 'pr_reviewer_db_test'" | grep -q 1 || \
-	docker compose exec db psql -U postgres -c "CREATE DATABASE pr_reviewer_db_test;"
-	@echo "Test database ready"
+	@if [ -f .env ]; then \
+		export $$(cat .env | grep -v '^#' | grep -v '^$$' | xargs); \
+	fi; \
+	POSTGRES_USER=$${POSTGRES_USER:-postgres}; \
+	POSTGRES_DB=$${POSTGRES_DB:-postgres}; \
+	TEST_POSTGRES_DB=$${TEST_POSTGRES_DB:-pr_reviewer_db_test}; \
+	echo "Creating test database"; \
+	docker compose exec db psql -U $$POSTGRES_USER -d $$POSTGRES_DB -c "SELECT 1 FROM pg_database WHERE datname = '$$TEST_POSTGRES_DB'" | grep -q 1 || \
+	docker compose exec db psql -U $$POSTGRES_USER -d $$POSTGRES_DB -c "CREATE DATABASE $$TEST_POSTGRES_DB;"; \
+	echo "Test database ready"
 
 clean:
 	docker compose down -v
@@ -33,4 +39,9 @@ migrate:
 	docker compose exec app alembic upgrade head
 
 load-test-ui:
-	locust -f locustfile.py --host=http://localhost:8080
+	@if [ -f .env ]; then \
+		export $$(cat .env | grep -v '^#' | xargs); \
+	fi; \
+	APP_HOST=$${APP_HOST:-localhost}; \
+	APP_PORT=$${APP_PORT:-8080}; \
+	locust -f locustfile.py --host=http://$${APP_HOST}:$${APP_PORT}
